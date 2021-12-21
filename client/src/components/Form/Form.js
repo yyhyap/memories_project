@@ -7,6 +7,7 @@ import useStyles from './styles';
 import { createPost } from '../../actions/posts';
 
 const Form = () => {
+    // state >>> a value of post data
     const [postData, setPostData] = useState({
         creator: '',
         title: '',
