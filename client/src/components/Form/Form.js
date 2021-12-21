@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TextField, Button, Typography, Paper } from '@material-ui/core';
 import FileBase from 'react-file-base64';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import useStyles from './styles';
-import { createPost } from '../../actions/posts';
+import { getPosts, createPost, updatePost } from '../../actions/posts';
 
-const Form = () => {
+const Form = ({ currentId, setCurrentId }) => {
     // state >>> a value of post data
     const [postData, setPostData] = useState({
         creator: '',
@@ -15,26 +15,51 @@ const Form = () => {
         tags: '',
         selectedFile: ''
     });
+    // find the post with id same as currentId
+    const post = useSelector((state) => currentId ? state.posts.find((post) => post._id === currentId) : null);
     const classes = useStyles();
     const dispatch = useDispatch();
+    
+    useEffect(() => {
+        if(post){
+            setPostData(post);
+        }
+        // dependency array: on what changes, the callback function should run
+        // if value 'post' has changed, invoke setPostData
+    }, [post])
 
     const handleSubmit = (e) => {
         // prevent to get refresh in the browser
         e.preventDefault();
 
-        // post the postData from state
-        // after dispatch, action will be handled by reducer
-        dispatch(createPost(postData));
+        if(currentId) {
+            dispatch(updatePost(currentId, postData));
+        } else {
+            // post the postData from state
+            // after dispatch, action will be handled by reducer
+            dispatch(createPost(postData));
+        }
+        
+        clear();
+        dispatch(getPosts());    
     }
 
-    const clear = () => {
-
+    const clear = () => {        
+        setPostData({
+            creator: '',
+            title: '',
+            message: '',
+            tags: '',
+            selectedFile: ''
+        });
+        console.log("currentId set to null!");
+        setCurrentId(null);
     }
 
     return (
         <Paper className={classes.paper}>
             <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit}>
-                <Typography variant="h6">Creating a memory</Typography>
+                <Typography variant="h6">{ currentId ? 'Editing' : 'Creating' } a memory</Typography>
                 <TextField 
                     name="creator" 
                     variant="outlined" 
