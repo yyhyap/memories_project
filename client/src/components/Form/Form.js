@@ -28,20 +28,20 @@ const Form = ({ currentId, setCurrentId }) => {
         // if value 'post' has changed, invoke setPostData
     }, [post])
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async(e) => {
         // prevent to get refresh in the browser
         e.preventDefault();
 
         if(currentId) {
-            dispatch(updatePost(currentId, postData));
+            await dispatch(updatePost(currentId, postData));
         } else {
             // post the postData from state
             // after dispatch, action will be handled by reducer
-            dispatch(createPost(postData));
+            await dispatch(createPost(postData));
         }
         
         clear();
-        dispatch(getPosts());    
+        // dispatch(getPosts());    
     }
 
     const clear = () => {        

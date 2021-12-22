@@ -5,7 +5,7 @@ export const getPosts = async (req, res) => {
     try {
         const postMessages = await PostMessage.find();
         
-        console.log(postMessages);
+        // console.log(postMessages);
 
         // return status code 200, and the array of post messages found from MongoDB in JSON format
         res.status(200).json(postMessages);
@@ -45,3 +45,19 @@ export const updatePost = async (req, res) => {
         res.status(500).json({ message: error.message });
     }    
 };
+
+export const deletePost = async (req, res) => {
+    const{ id: _id} = req.params;
+
+    if(!mongoose.Types.ObjectId.isValid(_id)) {
+        return res.status(404).send('No post with that id!');
+    }
+
+    try {
+        await PostMessage.findByIdAndRemove(_id);
+
+        res.json({ message: 'Post deleted successfully!' });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }    
+}
