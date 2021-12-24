@@ -8,6 +8,8 @@ export default (posts = [], action) => {
         case 'UPDATE':
             // update only the latest update post from the posts array, otherwise post without any update
             return posts.map((post) => post._id === action.payload._id ? action.payload : post);
+        case 'LIKE':
+            return posts.map((post) => post._id === action.payload._id ? action.payload : post);
         case 'FETCH_ALL':
             return action.payload;
         case 'CREATE':

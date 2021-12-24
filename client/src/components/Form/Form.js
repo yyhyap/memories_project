@@ -94,7 +94,7 @@ const Form = ({ currentId, setCurrentId }) => {
                     fullWidth
                     value={postData.tags}
                     // persist all data, and only change specific property of that object
-                    onChange={(e) => setPostData({ ...postData, tags: e.target.value })}
+                    onChange={(e) => setPostData({ ...postData, tags: e.target.value.split(',') })}
                 />
                 <div className={classes.fileInput}>
                     <FileBase 
