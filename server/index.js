@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 
 import postRoutes from './routes/posts.js';
+import userRoutes from './routes/users.js';
 
 // initialize app
 const app = express();
@@ -16,6 +17,7 @@ app.use(cors());
 
 // adding prefix to the url, only going to reach 'localhost:5000/posts'
 app.use('/posts', postRoutes);
+app.use('/user', userRoutes);
 
 const CONNECTION_URL = process.env.CONNECTION_URL;
 const PORT = process.env.PORT || 5000;

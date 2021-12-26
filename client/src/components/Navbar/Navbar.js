@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
+import decode from 'jwt-decode';
 
 import { AppBar, Avatar, Toolbar, Typography, Button } from '@material-ui/core';
 import useStyles from './styles';
@@ -19,17 +20,25 @@ const Navbar = () => {
     const logout = () => {
         dispatch({ type: LOGOUT});
 
-        navigate('/');
-        
         setUser(null);
+
+        console.log('Logging out ...');
+        navigate('/auth');        
     }
 
-    useEffect(() => {
+    useEffect(() => {    
         const token = user?.token;
 
-        // JWT ...
+        if(token) {
+            const decodedToken = decode(token);
 
-        setUser(JSON.parse(localStorage.getItem('profile')));
+            if(decodedToken.exp * 1000 < new Date().getTime()) {
+                logout();
+            }
+        }
+
+        setUser(JSON.parse(localStorage.getItem('profile')));       
+
     // when location changes, set the user
     }, [location]);
 
