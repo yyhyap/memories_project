@@ -16,6 +16,7 @@ const Form = ({ currentId, setCurrentId }) => {
     });
     // find the post with id same as currentId
     const post = useSelector((state) => currentId ? state.posts.find((post) => post._id === currentId) : null);
+    const authData = useSelector((state) => state.auth.authData);
     const classes = useStyles();
     const dispatch = useDispatch();
     const user = JSON.parse(localStorage.getItem('profile'));
@@ -55,7 +56,8 @@ const Form = ({ currentId, setCurrentId }) => {
         setCurrentId(null);
     }
 
-    if(!user?.result?.name) {
+    // if(!user?.result?.name) {
+    if(!authData?.result?.name) {
         return (
             <Paper className={classes.paper}>
                 <Typography variant="h6" align="center">
@@ -64,6 +66,7 @@ const Form = ({ currentId, setCurrentId }) => {
             </Paper>
         )
     } else {
+        console.log('Read authData: ', authData);
         return (
             <Paper className={classes.paper}>
                 <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit}>
