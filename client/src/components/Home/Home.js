@@ -5,7 +5,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import ChipInput from 'material-ui-chip-input';
 
 import Pagination from '../Pagination';
-import { getPosts } from '../../actions/posts';
+import { getPosts, getPostsBySearch } from '../../actions/posts';
 import Posts from '../Posts/Posts';
 import Form from '../Form/Form';
 
@@ -38,19 +38,22 @@ const Home = () => {
         // for example, if currentId has changed, invoke dispatch(getPosts())
     }, [currentId, dispatch]);
 
-    const searchPost = () => {
-        if(search.trim()) {
+    const searchPost = async() => {
+        if(search.trim() || tags) {
             // dispatch -> fetch search post
+            await dispatch(getPostsBySearch({ search, tags: tags.join(',') }));
+            navigate(`/posts/search?searchQuery=${search || 'none'}&tags=${tags.join(',')}`);
         } else {
             navigate('/');
         }
     }
 
-    const handleKeyPress = (e) => {
+    const handleKeyPress = async(e) => {
         // keyCode 13 >>> 'Enter' key
         if(e.keyCode === 13) {
             // search post
-            searchPost();
+            console.log('Enter pressed');
+            await searchPost();
         }
     }
 

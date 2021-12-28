@@ -14,6 +14,27 @@ export const getPosts = async (req, res) => {
     }
 };
 
+// query >>> /posts?id=123
+// params >>> /posts/:id -> 123
+export const getPostsBySearch = async (req, res) => {
+    const { searchQuery, tags } = req.query;
+
+    try {
+        // 'i' >>> ignore case
+        // TEST test TEst >>> test
+        const title = new RegExp(searchQuery, 'i');
+
+        // find the posts either match these 2 criteria
+        // title
+        // or one of the tags
+        const posts = await PostMessage.find({ $or: [ { title }, { tags: { $in: tags.split(',') } } ] });
+
+        res.status(200).json({ data: posts })
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+};
+
 export const createPost = async (req, res) => {
     const post = req.body;
 
