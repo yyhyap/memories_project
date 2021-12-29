@@ -23,25 +23,40 @@ const Home = () => {
     const navigate = useNavigate();
     // read the URL see whether has 'page' parameter in there
     const page = query.get('page') || 1;
-    const searchQuery = query.get('searchQuery');
+    const searchQueryFromURL = query.get('searchQuery') || 'none';
+    const tagsFromURL = query.get('tags');
     const classes = useStyles();
     const [search, setSearch] = useState('');
     const [tags, setTags] = useState([]);
+    const pathName = useLocation().pathname;
 
-    // accept 2 parameters
-    // 1.callback function
-    // 2. dependency array
-    useEffect(() => {
-        // after dispatch, will go to posts reducers
-        dispatch(getPosts());
-        // dependency array: on what changes, the callback function should run
-        // for example, if currentId has changed, invoke dispatch(getPosts())
-    }, [currentId, dispatch]);
+    console.log(pathName);
+    console.log(searchQueryFromURL, tagsFromURL);
+
+    // // accept 2 parameters
+    // // 1.callback function
+    // // 2. dependency array
+    // useEffect(() => {
+
+    //     async function fetchPosts() {
+    //         if(pathName.includes('/posts/search') && (searchQueryFromURL || tagsFromURL)) {
+    //             await dispatch(getPostsBySearch({ search: searchQueryFromURL, tags: tagsFromURL }));
+    //         } else {
+    //             // after dispatch, will go to posts reducers
+    //             await dispatch(getPosts());
+    //         }
+    //     }
+
+    //     fetchPosts();
+
+    //     // dependency array: on what changes, the callback function should run
+    //     // for example, if currentId has changed, invoke dispatch(getPosts())
+    // }, [currentId, dispatch]);
 
     const searchPost = async() => {
         if(search.trim() || tags) {
             // dispatch -> fetch search post
-            await dispatch(getPostsBySearch({ search, tags: tags.join(',') }));
+            await dispatch(getPostsBySearch({ search: search, tags: tags.join(',') }));
             navigate(`/posts/search?searchQuery=${search || 'none'}&tags=${tags.join(',')}`);
         } else {
             navigate('/');
@@ -97,7 +112,7 @@ const Home = () => {
                             </AppBar>
                             <Form currentId={currentId} setCurrentId={setCurrentId}/>
                             <Paper elevation={6}>
-                                <Pagination />
+                                <Pagination page={page} />
                             </Paper>
                         </Grid>
                     </Grid>

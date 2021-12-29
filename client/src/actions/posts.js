@@ -3,9 +3,11 @@ import { FETCH_BY_SEARCH, FETCH_ALL, CREATE, UPDATE, DELETE, LIKE } from '../con
 
 // Action Creators, used by App.js dispatch
 // async (dispatch) >>> using redux thunk
-export const getPosts = () => async (dispatch) => {
+export const getPosts = (page) => async (dispatch) => {
     try {
-        const { data } = await api.fetchPosts();
+        console.log('Read page: ', page);
+        const { data } = await api.fetchPosts(page);
+        console.log(data);
         // dispatch the 'action'
         dispatch({ type: FETCH_ALL, payload: data});
     } catch (error) {
@@ -19,6 +21,7 @@ export const getPosts = () => async (dispatch) => {
 
 export const getPostsBySearch = (searchQuery) => async (dispatch) => {
     try {
+        console.log('Read searchQuery: ', searchQuery);
         const { data: { data } } = await api.fetchPostsBySearch(searchQuery);
 
         console.log(data);
