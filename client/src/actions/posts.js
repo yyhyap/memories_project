@@ -1,15 +1,17 @@
 import * as api from '../api';
-import { FETCH_BY_SEARCH, FETCH_ALL, CREATE, UPDATE, DELETE, LIKE } from '../constants/actionTypes';
+import { FETCH_BY_SEARCH, FETCH_ALL, CREATE, UPDATE, DELETE, LIKE, START_LOADING, END_LOADING } from '../constants/actionTypes';
 
 // Action Creators, used by App.js dispatch
 // async (dispatch) >>> using redux thunk
 export const getPosts = (page) => async (dispatch) => {
     try {
+        dispatch({ type: START_LOADING });
         console.log('Read page: ', page);
         const { data } = await api.fetchPosts(page);
         console.log(data);
         // dispatch the 'action'
         dispatch({ type: FETCH_ALL, payload: data});
+        dispatch({ type: END_LOADING });
     } catch (error) {
         console.log(error.message);
     }
@@ -21,11 +23,13 @@ export const getPosts = (page) => async (dispatch) => {
 
 export const getPostsBySearch = (searchQuery) => async (dispatch) => {
     try {
+        dispatch({ type: START_LOADING });
         console.log('Read searchQuery: ', searchQuery);
         const { data: { data } } = await api.fetchPostsBySearch(searchQuery);
 
         console.log(data);
         dispatch({ type: FETCH_BY_SEARCH, payload: data});
+        dispatch({ type: END_LOADING });
     } catch (error) {
         console.log(error);
     }
@@ -33,9 +37,11 @@ export const getPostsBySearch = (searchQuery) => async (dispatch) => {
 
 export const createPost = (newPost) => async(dispatch) => {
     try {
+        dispatch({ type: START_LOADING });
         const { data } = await api.createPost(newPost);
 
-        dispatch({ type: CREATE, payload: data })
+        dispatch({ type: CREATE, payload: data });
+        dispatch({ type: END_LOADING });
     } catch (error) {
         console.log(error);
     }

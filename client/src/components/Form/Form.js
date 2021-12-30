@@ -56,8 +56,8 @@ const Form = ({ currentId, setCurrentId }) => {
         setCurrentId(null);
     }
 
-    // if(!user?.result?.name) {
-    if(!authData?.result?.name) {
+    // if(!authData?.result?.name) {
+    if(!user?.result?.name) {
         return (
             <Paper className={classes.paper}>
                 <Typography variant="h6" align="center">
@@ -68,7 +68,7 @@ const Form = ({ currentId, setCurrentId }) => {
     } else {
         console.log('Read authData: ', authData);
         return (
-            <Paper className={classes.paper}>
+            <Paper className={classes.paper} elevation={6}>
                 <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit}>
                     <Typography variant="h6">{ currentId ? 'Editing' : 'Creating' } a memory</Typography>
                     <TextField 
