@@ -2,10 +2,10 @@ import PostMessage from "../models/postMessage.js";
 import mongoose from 'mongoose';
 
 export const getPost = async (req, res) => {
-    const { id } = req.params;
+    const { id: _id } = req.params;
 
     try {
-        const post = await PostMessage.findById(id);
+        const post = await PostMessage.findById(_id);
 
         res.status(200).json(post);
     } catch (error) {
@@ -34,6 +34,8 @@ export const getPosts = async (req, res) => {
         // return status code 200, and the array of post messages found from MongoDB in JSON format
         res.status(200).json({ data: posts, currentPage: Number(page), numberOfPages: Math.ceil(total / LIMIT) });
     } catch (error) {
+        console.log(error);
+
         res.status(400).json({ message: error.message });
     }
 };
@@ -55,6 +57,8 @@ export const getPostsBySearch = async (req, res) => {
 
         res.status(200).json({ data: posts })
     } catch (error) {
+        console.log(error);
+
         res.status(400).json({ message: error.message });
     }
 };

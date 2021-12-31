@@ -6,8 +6,9 @@ import auth from '../middleware/auth.js';
 
 const router = express.Router();
 
-router.get('/:id', getPost);
+
 router.get('/search', getPostsBySearch);
+router.get('/:id', getPost);
 router.get('/', getPosts);
 router.post('/', auth, createPost);
 // patch is for update existing document

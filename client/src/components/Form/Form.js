@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { TextField, Button, Typography, Paper } from '@material-ui/core';
 import FileBase from 'react-file-base64';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import useStyles from './styles';
 import { getPosts, createPost, updatePost } from '../../actions/posts';
@@ -15,10 +16,11 @@ const Form = ({ currentId, setCurrentId }) => {
         selectedFile: ''
     });
     // find the post with id same as currentId
-    const post = useSelector((state) => currentId ? state.posts.find((post) => post._id === currentId) : null);
+    const post = useSelector((state) => currentId ? state.posts.posts.find((post) => post._id === currentId) : null);
     const authData = useSelector((state) => state.auth.authData);
     const classes = useStyles();
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const user = JSON.parse(localStorage.getItem('profile'));
     
     useEffect(() => {
@@ -38,7 +40,7 @@ const Form = ({ currentId, setCurrentId }) => {
         } else {
             // post the postData from state
             // after dispatch, action will be handled by reducer
-            await dispatch(createPost({ ...postData, name: user?.result?.name }));
+            await dispatch(createPost({ ...postData, name: user?.result?.name }, navigate));
         }
         
         clear();
