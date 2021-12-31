@@ -1,4 +1,4 @@
-import { FETCH_ALL, CREATE, UPDATE, DELETE, LIKE, FETCH_BY_SEARCH, START_LOADING, END_LOADING } from '../constants/actionTypes';
+import { FETCH_POST, FETCH_ALL, CREATE, UPDATE, DELETE, LIKE, FETCH_BY_SEARCH, START_LOADING, END_LOADING } from '../constants/actionTypes';
 
 // after dispatched from App.js, will handle the posts
 // initial state of posts is an empty array, hence []
@@ -25,6 +25,8 @@ export default (state = { isLoading: true, posts: [] }, action) => {
             };
         case FETCH_BY_SEARCH:
             return { ...state, posts: action.payload };
+        case FETCH_POST:
+            return { ...state, post: action.payload };
         case CREATE:
             // Redux expects that all state updates are done immutably
             // make a copy of the state first, then update the copy with the new value

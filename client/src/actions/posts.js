@@ -1,5 +1,5 @@
 import * as api from '../api';
-import { FETCH_BY_SEARCH, FETCH_ALL, CREATE, UPDATE, DELETE, LIKE, START_LOADING, END_LOADING } from '../constants/actionTypes';
+import { FETCH_POST, FETCH_BY_SEARCH, FETCH_ALL, CREATE, UPDATE, DELETE, LIKE, START_LOADING, END_LOADING } from '../constants/actionTypes';
 
 // Action Creators, used by App.js dispatch
 // async (dispatch) >>> using redux thunk
@@ -8,9 +8,26 @@ export const getPosts = (page) => async (dispatch) => {
         dispatch({ type: START_LOADING });
         console.log('Read page: ', page);
         const { data } = await api.fetchPosts(page);
-        console.log(data);
+        console.log('Read data from getPosts: ', data);
         // dispatch the 'action'
         dispatch({ type: FETCH_ALL, payload: data});
+        dispatch({ type: END_LOADING });
+    } catch (error) {
+        console.log(error.message);
+    }
+    // // type >>> type of the action
+    // // payload >>> data of the action
+    // const action = { type: 'FETCH_ALL', payload: []};
+    // dispatch(action);
+}
+
+export const getPost = (id) => async (dispatch) => {
+    try {
+        dispatch({ type: START_LOADING });
+        const { data } = await api.fetchPost(id);
+        console.log('Read data from getPost: ', data);
+        // dispatch the 'action'
+        dispatch({ type: FETCH_POST, payload: data});
         dispatch({ type: END_LOADING });
     } catch (error) {
         console.log(error.message);
