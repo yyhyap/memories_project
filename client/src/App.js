@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container } from '@material-ui/core';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
@@ -8,7 +8,14 @@ import Home from './components/Home/Home';
 import Auth from './components/Auth/Auth';
 
 const App = () => {
-    const user = JSON.parse(localStorage.getItem('profile'));
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
+
+    // useEffect(() => {
+    //     if(!user) {
+    //         localStorage.clear();
+    //         setUser(null);
+    //     }
+    // }, [user])
     
     return (
         <BrowserRouter>

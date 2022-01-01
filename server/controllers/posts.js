@@ -138,8 +138,32 @@ export const likePost = async (req, res) => {
 
         const updatedPost = await PostMessage.findByIdAndUpdate(_id, post, { new: true });
 
-        res.json(updatedPost);
+        res.status(200).json(updatedPost);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }    
+}
+
+export const commentPost = async (req, res) => {
+    const { id: _id } = req.params;
+
+    const { value } = req.body;
+
+    if(!mongoose.Types.ObjectId.isValid(_id)) {
+        return res.status(404).send('No post with that id!');
+    }
+
+    try {
+        const post = await PostMessage.findById(_id);
+
+        post.comments.push(value);
+
+        const updatedPost = await PostMessage.findByIdAndUpdate(_id, post, { new: true });
+
+        res.status(200).json(updatedPost);
+    } catch (error) {
+        console.log(error);
+
+        res.status(500).json({ message: error.message });
+    }
 }

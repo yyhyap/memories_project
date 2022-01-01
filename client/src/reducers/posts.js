@@ -1,4 +1,4 @@
-import { FETCH_POST, FETCH_ALL, CREATE, UPDATE, DELETE, LIKE, FETCH_BY_SEARCH, START_LOADING, END_LOADING } from '../constants/actionTypes';
+import { FETCH_POST, FETCH_ALL, CREATE, UPDATE, DELETE, LIKE, FETCH_BY_SEARCH, COMMENT, START_LOADING, END_LOADING } from '../constants/actionTypes';
 
 // after dispatched from App.js, will handle the posts
 // initial state of posts is an empty array, hence []
@@ -16,6 +16,8 @@ export default (state = { isLoading: true, posts: [] }, action) => {
             return { ...state, posts: state.posts.map((post) => (post._id === action.payload._id ? action.payload : post)) };
         case LIKE:
             return { ...state, posts: state.posts.map((post) => (post._id === action.payload._id ? action.payload : post)) };
+        case COMMENT:
+            return { ...state, posts: state.posts.map((post) => (post._id === action.payload._id ? action.payload : post))};
         case FETCH_ALL:
             return {
                 ...state,
